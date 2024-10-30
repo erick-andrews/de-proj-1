@@ -14,11 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Kubernetes and Helm
-        run: |
-          sudo snap install kubectl --classic
-          sudo snap install helm --classic
-
       - name: Run Helm Deploy Script
         run: |
           chmod +x ./bash/deploy_helm.sh
