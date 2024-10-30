@@ -1,4 +1,4 @@
-# Harmless comment to see if this triggers the workflow. testing deploy as me.
+# Harmless comment to see if this triggers the workflow. trying with print to catch errors.
 _rpcServer:
   args:
   - -c

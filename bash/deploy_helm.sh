@@ -14,5 +14,28 @@ POD_NAME=$(kubectl get pods -n new-test -l "component=webserver" -o jsonpath="{.
 
 # Step 4: Start port-forwarding in the background
 nohup kubectl port-forward --as eandrews --address 0.0.0.0 "$POD_NAME" 8080:8080 -n new-test > port-forward.log 2>&1 &
+
+sleep 2
+
+if ss -tuln | grep -q ":8080"; then
+  echo "Port forwarding started successfully on port 8080."
+else
+  echo "Port forwarding failed to start on port 8080."
+fi
+
+sleep 2
+
+cat port-forward.log
+
+sleep 2
+
+PORT_FORWARD_PID=$!
+if ps -p $PORT_FORWARD_PID > /dev/null; then
+  echo "Port forwarding process is running with PID $PORT_FORWARD_PID."
+else
+  echo "Port forwarding process failed to start."
+fi
+
+
 echo "Port forwarding started on port 8080 for pod $POD_NAME."
 
