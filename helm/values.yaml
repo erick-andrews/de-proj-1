@@ -1,3 +1,4 @@
+# Harmless comment to see if this triggers the workflow.
 _rpcServer:
   args:
   - -c
@@ -287,24 +288,24 @@ dagProcessor:
       container: {}
 dags:
   gitSync:
-    branch: v2-2-stable
+    branch: dev
     containerLifecycleHooks: {}
     containerName: git-sync
     depth: 1
-    enabled: false
+    enabled: true
     env: []
     envFrom: null
     extraVolumeMounts: []
     maxFailures: 0
     period: 5s
-    ref: v2-2-stable
-    repo: https://github.com/apache/airflow.git
+    ref: dev
+    repo: https://github.com/erick-andrews/de-proj-1.git 
     resources: {}
     rev: HEAD
     securityContext: {}
     securityContexts:
       container: {}
-    subPath: tests/dags
+    subPath: ~/projects/de-proj-1/airflow/dags
     uid: 65533
     wait: null
   mountPath: null
