@@ -6,6 +6,9 @@
 # Step 2: Deploy Airflow with Helm using dev-values.yaml
 helm upgrade new-release apache-airflow/airflow -f ./helm/values.yaml -n new-test
 
+# Wait for the pod to be in Running state (adjust time as needed)
+sleep 20
+
 # Step 3: Get the current webserver pod name dynamically
 POD_NAME=$(kubectl get pods -n new-test -l "component=webserver" -o jsonpath="{.items[0].metadata.name}")
 
