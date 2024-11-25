@@ -305,10 +305,10 @@ dags:
     securityContext: {}
     securityContexts:
       container: {}
-    subPath: ~/projects/de-proj-1/airflow/dags
+    subPath: airflow/dags
     uid: 65533
     wait: null
-  mountPath: null
+  mountPath: /opt/airflow/dags
   persistence:
     accessMode: ReadWriteOnce
     annotations: {}
