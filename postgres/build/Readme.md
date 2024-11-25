@@ -40,7 +40,7 @@ To connect to your database from outside the cluster execute the following comma
 
     kubectl port-forward --namespace dev-postgres svc/dev-postgres-postgresql 5432:5432 &
     PGPASSWORD="$POSTGRES_PASSWORD" psql --host 127.0.0.1 -U postgres -d postgres -p 5432
-
+    (or, kubectl port-forward --address 0.0.0.0 --namespace dev-postgres svc/dev-postgres-postgresql 5434:5432 to port-forward from anywhere)
 WARNING: The configured password will be ignored on new installation in case when previous PostgreSQL release was deleted through the helm command. In that case, old PVC will have an old password, and setting it through helm won't take effect. Deleting persistent volumes (PVs) will solve the issue.
 
 WARNING: There are "resources" sections in the chart not set. Using "resourcesPreset" is not recommended for production. For production installations, please set the following values according to your workload needs:
