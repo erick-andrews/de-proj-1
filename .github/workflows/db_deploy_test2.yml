@@ -1,4 +1,4 @@
-name: Deploy PostgreSQL Migrations
+name: Deploy PostgreSQL Migrations (fix)
 
 on:
   push:
