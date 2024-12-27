@@ -10,7 +10,7 @@ on:
 
 jobs:
   flyway-migration:
-    runs-on: ubuntu-latest
+    runs-on: local_ubuntu
     env:  # Move env to the job level (applies to all steps)
       DB_HOST: ${{ secrets.DB_HOST }}
       DB_PORT: 5433
