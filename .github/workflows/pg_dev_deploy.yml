@@ -6,7 +6,7 @@ on:
     branches:
       - dev
     paths:
-      - 'de-proj-1/flyway/**'  # Trigger only if files change in this path
+      - 'flyway/**'  # Trigger only if files change in this path
   workflow_dispatch:  # Allow manual triggers
 
 jobs:
