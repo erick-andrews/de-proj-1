@@ -1,4 +1,5 @@
-name: Deploy PostgreSQL Migrations (fix 2)
+---
+name: Deploy PostgreSQL Migrations (fix 3)
 
 on:
   push:
@@ -6,7 +7,7 @@ on:
       - dev
     paths:
       - 'de-proj-1/flyway/**'  # Trigger only if files change in this path
-  workflow_dispatch:  # Allow manual triggers
+  workflow_dispatch: # Allow manual triggers
 
 jobs:
   flyway-migration:
@@ -29,8 +30,8 @@ jobs:
       - name: Flyway Migration via Docker
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}/de-proj-1/flyway/migrations:/flyway/sql \
-            -v ${{ github.workspace }}/de-proj-1/flyway/flyway.conf:/flyway/conf/flyway.conf \
+            -v ${{ github.workspace }}/flyway/migrations:/flyway/sql \
+            -v ${{ github.workspace }}/flyway/flyway.conf:/flyway/conf/flyway.conf \
             -e FLYWAY_USER=$DB_USER \
             -e FLYWAY_PASSWORD=$DB_PASSWORD \
             -e DB_HOST=$DB_HOST \
