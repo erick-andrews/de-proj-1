@@ -166,3 +166,6 @@ actions-runner/
 
 # CSVs
 *.csv
+
+# Logs
+*.log
