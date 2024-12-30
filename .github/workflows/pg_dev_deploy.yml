@@ -12,12 +12,7 @@ on:
 jobs:
   flyway-migration:
     runs-on: [self-hosted, local_ubuntu]
-    env:  # Move env to the job level (applies to all steps)
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_PORT: 5433
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
+    environment: DEV
 
     steps:
       - name: Checkout Code
