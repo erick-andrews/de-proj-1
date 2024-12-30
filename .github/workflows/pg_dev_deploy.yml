@@ -1,4 +1,3 @@
----
 name: Dev PGSQL Migrations
 
 on:
@@ -12,13 +11,19 @@ on:
 jobs:
   flyway-migration:
     runs-on: [self-hosted, local_ubuntu]
-    environment: DEV
-
+    environment: DEV  # << Add this to ensure environment secrets are pulled
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
       
       - name: Debug Environment Variables
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: 5433
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
         run: |
           echo "DB_HOST=$DB_HOST"
           echo "DB_PORT=$DB_PORT"
@@ -26,15 +31,27 @@ jobs:
           echo "DB_NAME=$DB_NAME"
       
       - name: Inject Secrets into flyway.conf
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: 5433
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
         run: |
           envsubst < flyway/flyway.template.conf > flyway/flyway.conf
-      
+
       - name: Verify flyway.conf
         run: |
           echo "flyway.conf contents:"
           cat flyway/flyway.conf
       
-      - name: Inject Secrets into flyway.conf
+      - name: Inject Secrets into flyway.conf (Fallback with sed)
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: 5433
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
         run: |
           sed -i "s|\${DB_HOST}|${DB_HOST}|g" flyway/flyway.conf
           sed -i "s|\${DB_PORT}|${DB_PORT}|g" flyway/flyway.conf
@@ -43,6 +60,12 @@ jobs:
           sed -i "s|\${DB_NAME}|${DB_NAME}|g" flyway/flyway.conf
     
       - name: Flyway Migration via Docker
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: 5433
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
         run: |
           docker run --rm \
             -v ${{ github.workspace }}/flyway/migrations:/flyway/sql \
