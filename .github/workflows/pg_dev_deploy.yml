@@ -22,11 +22,31 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
+      
+      - name: Debug Environment Variables
+        run: |
+          echo "DB_HOST=$DB_HOST"
+          echo "DB_PORT=$DB_PORT"
+          echo "DB_USER=$DB_USER"
+          echo "DB_NAME=$DB_NAME"
+      
       - name: Inject Secrets into flyway.conf
         run: |
           envsubst < flyway/flyway.template.conf > flyway/flyway.conf
-
+      
+      - name: Verify flyway.conf
+        run: |
+          echo "flyway.conf contents:"
+          cat flyway/flyway.conf
+      
+      - name: Inject Secrets into flyway.conf
+        run: |
+          sed -i "s|\${DB_HOST}|${DB_HOST}|g" flyway/flyway.conf
+          sed -i "s|\${DB_PORT}|${DB_PORT}|g" flyway/flyway.conf
+          sed -i "s|\${DB_USER}|${DB_USER}|g" flyway/flyway.conf
+          sed -i "s|\${DB_PASSWORD}|${DB_PASSWORD}|g" flyway/flyway.conf
+          sed -i "s|\${DB_NAME}|${DB_NAME}|g" flyway/flyway.conf
+    
       - name: Flyway Migration via Docker
         run: |
           docker run --rm \
