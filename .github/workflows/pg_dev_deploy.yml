@@ -25,7 +25,7 @@ jobs:
 
       - name: Inject Secrets into flyway.conf
         run: |
-          envsubst < de-proj-1/flyway/flyway.template.conf > flyway/flyway.conf
+          envsubst < flyway/flyway.template.conf > flyway/flyway.conf
 
       - name: Flyway Migration via Docker
         run: |
