@@ -1,6 +1,6 @@
 nohup: ignoring input
-Forwarding from 127.0.0.1:5434 -> 5432
-Forwarding from [::1]:5434 -> 5432
+Forwarding from 127.0.0.1:5434 -> 5error: lost connection to pod
+ -> 5432
 Handling connection for 5434
 E1125 03:05:37.099795 3065791 portforward.go:413] "Unhandled Error" err="an error occurred forwarding 5434 -> 5432: error forwarding port 5432 to pod 9452ef3f047a333615bb5a145ace487997a5ed94ff83f5cbd69538bf0d1f0968, uid : failed to execute portforward in network namespace \"/var/run/netns/cni-158b7b2a-b883-5e7c-cc22-abbcb69bf92c\": failed to connect to localhost:5432 inside namespace \"9452ef3f047a333615bb5a145ace487997a5ed94ff83f5cbd69538bf0d1f0968\", IPv4: dial tcp4 127.0.0.1:5432: connect: connection refused IPv6 dial tcp6 [::1]:5432: connect: connection refused "
 error: lost connection to pod
