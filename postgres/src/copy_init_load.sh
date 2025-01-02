@@ -5,7 +5,7 @@ set -e  # Exit on error
 DB_NAME="dev_airbnb"
 DB_USER="eandrews"
 CSV_PATH=$1  # Pass CSV path as an argument
-STAGING_TABLE="staging_listings_performance"
+STAGING_TABLE="listings.airbnb_staging(listing_id, last_year_reviews, host_since, host_is_superhost, host_number_of_listings, neighbourhood, beds_number, bedrooms_number, property_type, max_allowed_guests, price, total_reviews, rating_score, accuracy_score, cleanliness_score, checkin_score, communication_score, location_score, value_for_money_score, reviews_per_month, city, season, bathrooms_number, bathrooms_type, coordinates, date_of_scraping)"
 
 if [ -z "$CSV_PATH" ]; then
   echo "Usage: $0 <path_to_csv>"
