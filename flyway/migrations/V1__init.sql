@@ -45,7 +45,7 @@ CREATE TABLE host_dim (
 CREATE TABLE location_dim (
     city           VARCHAR(100),
     neighbourhood  VARCHAR(100),
-    coordinates    GEOMETRY(Point, 4326),  -- Supports spatial queries
+    coordinates    TEXT,  -- Supports spatial queries
     date_added     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (city, neighbourhood)
 );
