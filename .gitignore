@@ -166,6 +166,9 @@ actions-runner/
 
 # CSVs
 *.csv
+*.parquet
 
 # Logs
 *.log
+
+spark-iceberg/values.yaml

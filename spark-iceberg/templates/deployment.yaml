@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-iceberg
+  labels:
+    app: spark-iceberg
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: spark-iceberg
+  template:
+    metadata:
+      labels:
+        app: spark-iceberg
+    spec:
+      containers:
+        - name: spark-iceberg
+          image: {{ .Values.sparkIceberg.image }}
+          ports:
+            - containerPort: {{ .Values.sparkIceberg.ports.jupyter }}
+            - containerPort: {{ .Values.sparkIceberg.ports.spark_ui }}
+            - containerPort: {{ .Values.sparkIceberg.ports.thrift }}
+            - containerPort: {{ .Values.sparkIceberg.ports.thrift_alt }}
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              value: {{ .Values.minio.env.access_key }}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.minio.env.secret_key }}
+            - name: AWS_REGION
+              value: {{ .Values.minio.env.region }}
+          volumeMounts:
+            - name: warehouse
+              mountPath: /home/iceberg/warehouse
+      volumes:
+        - name: warehouse
+          persistentVolumeClaim:
+            claimName: iceberg-pvc

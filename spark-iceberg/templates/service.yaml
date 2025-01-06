@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-iceberg-service
+spec:
+  selector:
+    app: spark-iceberg
+  ports:
+    - protocol: TCP
+      port: 8888  # Expose new Jupyter port
+      targetPort: {{ .Values.sparkIceberg.ports.jupyter }}
+      name: jupyter
+    - protocol: TCP
+      port: 8081  # Expose new Spark UI port
+      targetPort: {{ .Values.sparkIceberg.ports.spark_ui }}
+      name: spark-ui
+    - protocol: TCP
+      port: 9000
+      targetPort: {{ .Values.minio.ports.s3 }}
+      name: s3
+    - protocol: TCP
+      port: 9001
+      targetPort: {{ .Values.minio.ports.console }}
+      name: minio-console

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-iceberg-config
+  labels:
+    app: spark-iceberg
+data:
+  AWS_ACCESS_KEY_ID: {{ .Values.minio.env.access_key }}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.minio.env.secret_key }}
+  AWS_REGION: {{ .Values.minio.env.region }}
+  CATALOG_WAREHOUSE: s3://warehouse/
+  CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
+  CATALOG_S3_ENDPOINT: http://minio:9000
+  SPARK_DRIVER_MEMORY: {{ .Values.sparkIceberg.resources.driver_memory }}
+  SPARK_EXECUTOR_MEMORY: {{ .Values.sparkIceberg.resources.executor_memory }}
