@@ -81,7 +81,7 @@ airflowLocalSettings: |-
   {{- end }}
   {{- end }}
 airflowPodAnnotations: {}
-airflowVersion: 2.9.3
+airflowVersion: 2.10.4
 allowPodLaunching: true
 cleanup:
   affinity: {}
@@ -333,7 +333,7 @@ data:
   resultBackendSecretName: null
 defaultAirflowDigest: null
 defaultAirflowRepository: apache/airflow
-defaultAirflowTag: 2.9.3
+defaultAirflowTag: 2.10.4
 elasticsearch:
   connection: {}
   enabled: false
