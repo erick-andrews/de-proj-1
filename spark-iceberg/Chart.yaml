@@ -1,5 +1,0 @@
-apiVersion: v2
-name: spark-iceberg
-description: A Helm chart to deploy Spark with Iceberg and MinIO
-version: 0.1.0
-appVersion: "3.3.0"

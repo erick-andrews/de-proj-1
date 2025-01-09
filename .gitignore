@@ -170,5 +170,7 @@ actions-runner/
 
 # Logs
 *.log
-
-spark-iceberg/values.yaml
+# ignore env vars
+jupyter/ip_explore.env
+terraform/.terraform/
+op-db/
