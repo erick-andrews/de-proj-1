@@ -27,3 +27,8 @@ resource "aws_s3_bucket_object" "gold_folder" {
   bucket = aws_s3_bucket.ip_explorer.id
   key    = "gold/"
 }
+
+resource "aws_s3_bucket_object" "hadoop_catalog" {
+  bucket = aws_s3_bucket.ip_explorer.id
+  key    = "metadata/"
+}

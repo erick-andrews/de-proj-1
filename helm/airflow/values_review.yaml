@@ -1,7 +1,4 @@
-# Harmless comment to see if this triggers the workflow. Changing this to try and see what user is deploying...
-airflow:
-  protectedPipPackages:
-    - "boto3==1.35.98"
+COMPUTED VALUES:
 _rpcServer:
   args:
   - -c
@@ -40,7 +37,6 @@ _rpcServer:
     pod: {}
   service:
     annotations: {}
-    loadBalancerIP: null
     loadBalancerSourceRanges: []
     ports:
     - name: rpc-server
@@ -50,7 +46,6 @@ _rpcServer:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   startupProbe:
     failureThreshold: 6
     periodSeconds: 10
@@ -62,6 +57,9 @@ _rpcServer:
     securityContexts:
       container: {}
 affinity: {}
+airflow:
+  protectedPipPackages:
+  - boto3==1.35.98
 airflowConfigAnnotations: {}
 airflowHome: /opt/airflow
 airflowLocalSettings: |-
@@ -92,16 +90,13 @@ cleanup:
   - bash
   - -c
   - exec airflow kubernetes cleanup-pods --namespace={{ .Release.Namespace }}
-  command: null
   containerLifecycleHooks: {}
   enabled: false
   env: []
-  failedJobsHistoryLimit: null
   jobAnnotations: {}
   labels: {}
   nodeSelector: {}
   podAnnotations: {}
-  priorityClassName: null
   resources: {}
   schedule: '*/15 * * * *'
   securityContext: {}
@@ -112,8 +107,6 @@ cleanup:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
-  successfulJobsHistoryLimit: null
   tolerations: []
   topologySpreadConstraints: []
 config:
@@ -205,7 +198,6 @@ createUserJob:
   - '{{ .Values.webserver.defaultUser.lastName }}'
   - -p
   - '{{ .Values.webserver.defaultUser.password }}'
-  command: null
   containerLifecycleHooks: {}
   env: []
   extraContainers: []
@@ -215,7 +207,6 @@ createUserJob:
   jobAnnotations: {}
   labels: {}
   nodeSelector: {}
-  priorityClassName: null
   resources: {}
   securityContext: {}
   securityContexts:
@@ -225,7 +216,6 @@ createUserJob:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   tolerations: []
   topologySpreadConstraints: []
   ttlSecondsAfterFinished: 300
@@ -237,7 +227,6 @@ dagProcessor:
   - bash
   - -c
   - exec airflow dag-processor
-  command: null
   containerLifecycleHooks: {}
   enabled: false
   env: []
@@ -246,7 +235,6 @@ dagProcessor:
   extraVolumeMounts: []
   extraVolumes: []
   livenessProbe:
-    command: null
     failureThreshold: 5
     initialDelaySeconds: 10
     periodSeconds: 60
@@ -255,7 +243,6 @@ dagProcessor:
     args:
     - bash
     - /clean-logs
-    command: null
     enabled: true
     resources: {}
     retentionDays: 15
@@ -263,10 +250,8 @@ dagProcessor:
       container: {}
   nodeSelector: {}
   podAnnotations: {}
-  priorityClassName: null
   replicas: 1
   resources: {}
-  revisionHistoryLimit: null
   safeToEvict: true
   securityContext: {}
   securityContexts:
@@ -276,7 +261,6 @@ dagProcessor:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -304,7 +288,7 @@ dags:
     maxFailures: 0
     period: 5s
     ref: dev
-    repo: https://github.com/erick-andrews/de-proj-1.git 
+    repo: https://github.com/erick-andrews/de-proj-1.git
     resources: {}
     rev: HEAD
     securityContext: {}
@@ -312,37 +296,25 @@ dags:
       container: {}
     subPath: airflow/dags
     uid: 65533
-    wait: null
   mountPath: /opt/airflow/dags
   persistence:
     accessMode: ReadWriteOnce
     annotations: {}
     enabled: false
-    existingClaim: null
     size: 1Gi
-    storageClassName: null
-    subPath: null
 data:
-  brokerUrl: null
-  brokerUrlSecretName: null
   metadataConnection:
     db: postgres
-    host: null
     pass: postgres
     port: 5432
     protocol: postgresql
     sslmode: disable
     user: postgres
-  metadataSecretName: null
-  resultBackendConnection: null
-  resultBackendSecretName: null
-defaultAirflowDigest: null
 defaultAirflowRepository: apache/airflow
 defaultAirflowTag: 2.10.4
 elasticsearch:
   connection: {}
   enabled: false
-  secretName: null
 enableBuiltInSecretEnvVars:
   AIRFLOW__CELERY__BROKER_URL: true
   AIRFLOW__CELERY__CELERY_RESULT_BACKEND: true
@@ -357,15 +329,11 @@ enableBuiltInSecretEnvVars:
 env: []
 executor: CeleryExecutor
 extraConfigMaps: {}
-extraEnv: null
 extraEnvFrom: |-
   - secretRef:
       name: aws-credentials
   - secretRef:
       name: px11litecsv-token
-extraSecrets:
-fernetKey: null
-fernetKeySecretName: null
 flower:
   affinity: {}
   annotations: {}
@@ -375,7 +343,6 @@ flower:
   - |-
     exec \
     airflow {{ semverCompare ">=2.0.0" .Values.airflowVersion | ternary "celery flower" "flower" }}
-  command: null
   containerLifecycleHooks: {}
   enabled: false
   env: []
@@ -395,24 +362,19 @@ flower:
       ports:
       - port: '{{ .Values.ports.flowerUI }}'
   nodeSelector: {}
-  password: null
   podAnnotations: {}
-  priorityClassName: null
   readinessProbe:
     failureThreshold: 10
     initialDelaySeconds: 10
     periodSeconds: 5
     timeoutSeconds: 5
   resources: {}
-  revisionHistoryLimit: null
-  secretName: null
   securityContext: {}
   securityContexts:
     container: {}
     pod: {}
   service:
     annotations: {}
-    loadBalancerIP: null
     loadBalancerSourceRanges: []
     ports:
     - name: flower-ui
@@ -422,22 +384,15 @@ flower:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   tolerations: []
   topologySpreadConstraints: []
-  username: null
 fullnameOverride: ""
 gid: 0
 images:
   airflow:
-    digest: null
     pullPolicy: IfNotPresent
-    repository: null
-    tag: null
   flower:
     pullPolicy: IfNotPresent
-    repository: null
-    tag: null
   gitSync:
     pullPolicy: IfNotPresent
     repository: registry.k8s.io/git-sync/git-sync
@@ -453,8 +408,6 @@ images:
     tag: airflow-pgbouncer-exporter-2024.06.18-0.17.0
   pod_template:
     pullPolicy: IfNotPresent
-    repository: null
-    tag: null
   redis:
     pullPolicy: IfNotPresent
     repository: redis
@@ -465,7 +418,6 @@ images:
     tag: v0.26.1
   useDefaultImageForMigration: false
 ingress:
-  enabled: null
   flower:
     annotations: {}
     enabled: false
@@ -519,7 +471,6 @@ kerberos:
     }
   configPath: /etc/krb5.conf
   enabled: false
-  keytabBase64Content: null
   keytabPath: /etc/airflow.keytab
   principal: airflow@FOO.COM
   reinitFrequency: 3600
@@ -529,9 +480,7 @@ logs:
   persistence:
     annotations: {}
     enabled: false
-    existingClaim: null
     size: 100Gi
-    storageClassName: null
 migrateDatabaseJob:
   affinity: {}
   annotations: {}
@@ -542,7 +491,6 @@ migrateDatabaseJob:
   - |-
     exec \
     airflow {{ semverCompare ">=2.7.0" .Values.airflowVersion | ternary "db migrate" (semverCompare ">=2.0.0" .Values.airflowVersion | ternary "db upgrade" "upgradedb") }}
-  command: null
   containerLifecycleHooks: {}
   enabled: true
   extraContainers: []
@@ -552,7 +500,6 @@ migrateDatabaseJob:
   jobAnnotations: {}
   labels: {}
   nodeSelector: {}
-  priorityClassName: null
   resources: {}
   securityContext: {}
   securityContexts:
@@ -562,7 +509,6 @@ migrateDatabaseJob:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   tolerations: []
   topologySpreadConstraints: []
   ttlSecondsAfterFinished: 300
@@ -575,7 +521,6 @@ nodeSelector: {}
 pgbouncer:
   affinity: {}
   annotations: {}
-  args: null
   auth_file: /etc/pgbouncer/users.txt
   auth_type: scram-sha-256
   ciphers: normal
@@ -584,7 +529,6 @@ pgbouncer:
   - -u
   - nobody
   - /etc/pgbouncer/pgbouncer.ini
-  configSecretName: null
   containerLifecycleHooks:
     preStop:
       exec:
@@ -595,9 +539,6 @@ pgbouncer:
   enabled: false
   env: []
   extraContainers: []
-  extraIni: null
-  extraIniMetadata: null
-  extraIniResultBackend: null
   extraNetworkPolicies: []
   extraVolumeMounts: []
   extraVolumes: []
@@ -619,19 +560,15 @@ pgbouncer:
     securityContexts:
       container: {}
     sslmode: disable
-    statsSecretKey: null
-    statsSecretName: null
   nodeSelector: {}
   podAnnotations: {}
   podDisruptionBudget:
     config:
       maxUnavailable: 1
     enabled: false
-  priorityClassName: null
   replicas: 1
   resources: {}
   resultBackendPoolSize: 5
-  revisionHistoryLimit: null
   securityContexts:
     container: {}
     pod: {}
@@ -641,17 +578,12 @@ pgbouncer:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
-  ssl:
-    ca: null
-    cert: null
-    key: null
+  ssl: {}
   sslmode: prefer
   tolerations: []
   topologySpreadConstraints: []
   uid: 65534
   verbose: 0
-podTemplate: null
 ports:
   _rpcServer: 9080
   airflowUI: 8080
@@ -1212,15 +1144,11 @@ redis:
   containerLifecycleHooks: {}
   enabled: true
   nodeSelector: {}
-  password: null
-  passwordSecretName: null
   persistence:
     annotations: {}
     enabled: true
     size: 1Gi
-    storageClassName: null
   podAnnotations: {}
-  priorityClassName: null
   resources: {}
   safeToEvict: true
   securityContext: {}
@@ -1231,15 +1159,12 @@ redis:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   terminationGracePeriodSeconds: 600
   tolerations: []
   topologySpreadConstraints: []
   uid: 0
 registry:
   connection: {}
-  secretName: null
-revisionHistoryLimit: null
 scheduler:
   affinity: {}
   annotations: {}
@@ -1247,7 +1172,6 @@ scheduler:
   - bash
   - -c
   - exec airflow scheduler
-  command: null
   containerLifecycleHooks: {}
   enabled: true
   env: []
@@ -1258,7 +1182,6 @@ scheduler:
   hostAliases: []
   labels: {}
   livenessProbe:
-    command: null
     failureThreshold: 5
     initialDelaySeconds: 10
     periodSeconds: 60
@@ -1267,7 +1190,6 @@ scheduler:
     args:
     - bash
     - /clean-logs
-    command: null
     containerLifecycleHooks: {}
     enabled: true
     resources: {}
@@ -1280,10 +1202,8 @@ scheduler:
     config:
       maxUnavailable: 1
     enabled: false
-  priorityClassName: null
   replicas: 1
   resources: {}
-  revisionHistoryLimit: null
   safeToEvict: true
   securityContext: {}
   securityContexts:
@@ -1293,22 +1213,17 @@ scheduler:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   startupProbe:
-    command: null
     failureThreshold: 6
     periodSeconds: 10
     timeoutSeconds: 20
-  strategy: null
   tolerations: []
   topologySpreadConstraints: []
-  updateStrategy: null
   waitForMigrations:
     enabled: true
     env: []
     securityContexts:
       container: {}
-schedulerName: null
 secret: []
 securityContext: {}
 securityContexts:
@@ -1328,9 +1243,7 @@ statsd:
   nodeSelector: {}
   overrideMappings: []
   podAnnotations: {}
-  priorityClassName: null
   resources: {}
-  revisionHistoryLimit: null
   securityContext: {}
   securityContexts:
     container: {}
@@ -1341,7 +1254,6 @@ statsd:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   tolerations: []
   topologySpreadConstraints: []
   uid: 65534
@@ -1354,7 +1266,6 @@ triggerer:
   - bash
   - -c
   - exec airflow triggerer
-  command: null
   containerLifecycleHooks: {}
   enabled: true
   env: []
@@ -1375,7 +1286,6 @@ triggerer:
     usePgbouncer: false
   labels: {}
   livenessProbe:
-    command: null
     failureThreshold: 5
     initialDelaySeconds: 10
     periodSeconds: 60
@@ -1384,7 +1294,6 @@ triggerer:
     args:
     - bash
     - /clean-logs
-    command: null
     containerLifecycleHooks: {}
     enabled: true
     resources: {}
@@ -1396,14 +1305,10 @@ triggerer:
     annotations: {}
     enabled: true
     fixPermissions: false
-    persistentVolumeClaimRetentionPolicy: null
     size: 100Gi
-    storageClassName: null
   podAnnotations: {}
-  priorityClassName: null
   replicas: 1
   resources: {}
-  revisionHistoryLimit: null
   safeToEvict: true
   securityContext: {}
   securityContexts:
@@ -1413,7 +1318,6 @@ triggerer:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -1421,7 +1325,6 @@ triggerer:
   terminationGracePeriodSeconds: 60
   tolerations: []
   topologySpreadConstraints: []
-  updateStrategy: null
   waitForMigrations:
     enabled: true
     env: []
@@ -1439,7 +1342,6 @@ webserver:
   - bash
   - -c
   - exec airflow webserver
-  command: null
   configMapAnnotations: {}
   containerLifecycleHooks: {}
   defaultUser:
@@ -1476,7 +1378,6 @@ webserver:
     config:
       maxUnavailable: 1
     enabled: false
-  priorityClassName: null
   readinessProbe:
     failureThreshold: 5
     initialDelaySeconds: 15
@@ -1485,14 +1386,12 @@ webserver:
     timeoutSeconds: 5
   replicas: 1
   resources: {}
-  revisionHistoryLimit: null
   securityContext: {}
   securityContexts:
     container: {}
     pod: {}
   service:
     annotations: {}
-    loadBalancerIP: null
     loadBalancerSourceRanges: []
     ports:
     - name: airflow-ui
@@ -1502,13 +1401,11 @@ webserver:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   startupProbe:
     failureThreshold: 6
     periodSeconds: 10
     scheme: HTTP
     timeoutSeconds: 20
-  strategy: null
   tolerations: []
   topologySpreadConstraints: []
   waitForMigrations:
@@ -1516,10 +1413,7 @@ webserver:
     env: []
     securityContexts:
       container: {}
-  webserverConfig: null
-  webserverConfigConfigMapName: null
-webserverSecretKey: null
-webserverSecretKeySecretName: my-webserver-secret 
+webserverSecretKeySecretName: my-webserver-secret
 workers:
   affinity: {}
   annotations: {}
@@ -1529,7 +1423,6 @@ workers:
   - |-
     exec \
     airflow {{ semverCompare ">=2.0.0" .Values.airflowVersion | ternary "celery worker" "worker" }}
-  command: null
   containerLifecycleHooks: {}
   env: []
   extraContainers: []
@@ -1573,7 +1466,6 @@ workers:
       container: {}
   labels: {}
   livenessProbe:
-    command: null
     enabled: true
     failureThreshold: 5
     initialDelaySeconds: 10
@@ -1583,7 +1475,6 @@ workers:
     args:
     - bash
     - /clean-logs
-    command: null
     enabled: true
     resources: {}
     retentionDays: 15
@@ -1595,17 +1486,12 @@ workers:
     containerLifecycleHooks: {}
     enabled: true
     fixPermissions: false
-    persistentVolumeClaimRetentionPolicy: null
     securityContexts:
       container: {}
     size: 100Gi
-    storageClassName: null
   podAnnotations: {}
-  priorityClassName: null
   replicas: 1
   resources: {}
-  revisionHistoryLimit: null
-  runtimeClassName: null
   safeToEvict: false
   securityContext: {}
   securityContexts:
@@ -1615,7 +1501,6 @@ workers:
     annotations: {}
     automountServiceAccountToken: true
     create: true
-    name: null
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -1623,7 +1508,6 @@ workers:
   terminationGracePeriodSeconds: 600
   tolerations: []
   topologySpreadConstraints: []
-  updateStrategy: null
   volumeClaimTemplates: []
   waitForMigrations:
     enabled: true
