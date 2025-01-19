@@ -528,7 +528,7 @@ limits: []
 logs:
   persistence:
     annotations: {}
-    enabled: false
+    enabled: true
     existingClaim: null
     size: 100Gi
     storageClassName: null
@@ -1534,8 +1534,13 @@ workers:
   env: []
   extraContainers: []
   extraInitContainers: []
-  extraVolumeMounts: []
-  extraVolumes: []
+  extraVolumeMounts: 
+    - name: docker-sock
+      mountPath: /var/run/docker.sock
+  extraVolumes: 
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
   hostAliases: []
   hpa:
     behavior: {}

@@ -174,3 +174,6 @@ actions-runner/
 jupyter/ip_explore.env
 terraform/.terraform/
 op-db/
+helm/airflow/airflow/
+helm/airflow/output.yaml
+helm/airflow/dockersock_ts.txt
