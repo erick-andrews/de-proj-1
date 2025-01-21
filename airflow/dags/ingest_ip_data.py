@@ -16,7 +16,7 @@ with DAG(
         namespace="new-test",  # Replace with your Kubernetes namespace
         image="erickandrews/bronze_etl:0.1",
         cmds=["python"],
-        arguments=["/src/retrieve_write_parquet.py"],
+        arguments=["/app/src/retrieve_write_parquet.py"],
         name="run-script-task",
         is_delete_operator_pod=True,  # Delete pod after task completion
         in_cluster=True,  # Use Kubernetes cluster configuration
