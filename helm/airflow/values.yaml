@@ -2,6 +2,8 @@
 airflow:
   protectedPipPackages:
     - "boto3==1.35.98"
+  extraPipPackages:
+    - apache-airflow-providers-cncf-kubernetes
 _rpcServer:
   args:
   - -c
@@ -29,11 +31,11 @@ _rpcServer:
       maxUnavailable: 1
     enabled: false
   readinessProbe:
-    failureThreshold: 5
-    initialDelaySeconds: 15
+    failureThreshold: 10
+    initialDelaySeconds: 60
     periodSeconds: 10
     scheme: HTTP
-    timeoutSeconds: 5
+    timeoutSeconds: 10
   resources: {}
   securityContexts:
     container: {}
