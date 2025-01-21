@@ -1,5 +1,6 @@
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow import DAG
+from airflow.kubernetes.secret import Secret
 from datetime import datetime
 
 with DAG(
@@ -21,4 +22,9 @@ with DAG(
         is_delete_operator_pod=True,  # Delete pod after task completion
         in_cluster=True,  # Use Kubernetes cluster configuration
         get_logs=True,  # Stream logs to Airflow
+        secrets=[
+        Secret(deploy_type="env", deploy_target="TOKEN", secret="px11litecsv-token", key="TOKEN"),
+        Secret(deploy_type="env", deploy_target="AWS_ACCESS_KEY_ID", secret="aws-credentials", key="AWS_ACCESS_KEY_ID"),
+        Secret(deploy_type="env", deploy_target="AWS_SECRET_ACCESS_KEY", secret="aws-credentials", key="AWS_SECRET_ACCESS_KEY"),
+    ],
     )
