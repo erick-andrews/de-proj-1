@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 WORKDIR /app
 
 # Copy ETL scripts
-COPY src ./src
+COPY constants.py functions.py main.py ./
 
 # Default command
-CMD ["python", "src/retrieve_write_parquet.py"]
+CMD ["python", "./main.py"]
