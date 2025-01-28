@@ -1,4 +1,4 @@
-CREATE TABLE glue_catalog_name.database_name.table_name (
+CREATE TABLE IF NOT EXISTS bronze_cat.database_name.table_name (
     ip_num_low INT,
     ip_num_high INT,
     country_code STRING,
@@ -20,4 +20,4 @@ CREATE TABLE glue_catalog_name.database_name.table_name (
 )
 USING iceberg
 PARTITIONED BY (updated_at)
-LOCATION 's3://<ip_explorer>/';
+LOCATION 's3://ip-explorer/metadata/';

@@ -17,3 +17,5 @@ rename_dict = {
 }
 
 region_name = "us-east-1"
+
+output_path = "/var/tmp/bronze/"

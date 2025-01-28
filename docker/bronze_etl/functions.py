@@ -6,47 +6,52 @@ import io
 import pyarrow as pa
 import pyarrow.parquet as pq
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, expr, udf
+from pyspark.sql.functions import col, expr, udf, current_timestamp
 from pyspark.sql.types import StringType
 from constants import *
 
-def extract_to_spark_dataframe():
-    """
-    Extracts data from a URL into a Spark DataFrame.
+import os
+import requests
 
-    Returns:
-        pyspark.sql.DataFrame: The extracted data as a Spark DataFrame.
+def extract_and_save_to_local():
     """
-    # Grab token from K8s Secrets.
-    token = os.getenv("TOKEN", "No Token Found")
+    Downloads data from a URL and saves it to a local file.
+    
+    Returns:
+        str: The path to the saved file.
+    """
+    # Replace with your actual token and database code
+    token = os.getenv('IP2LOCATION_TOKEN')
     database_code = 'PX11LITECSV'
     dataname = 'px11'
-    # Construct the URL for data pull
+
+    # Construct the URL
     url = f"https://www.ip2location.com/download/?token={token}&file={database_code}"
+
+    # output_path imported as constant
+    # Set the destination path for the downloaded file
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     try:
         # Send GET request to download the file
         response = requests.get(url, stream=True)
         response.raise_for_status()  # Raise an error for bad responses
 
-        # Read the response content into a Pandas DataFrame (assuming CSV format)
-        data = io.BytesIO(response.content)  # Read the content into memory
-        pandas_df = pd.read_csv(data)  # Adjust to appropriate reader (CSV, JSON, etc.)
+        # Write the file in chunks to handle large downloads
+        with open(output_path, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=1024):
+                if chunk:
+                    file.write(chunk)
 
-        print("Download and conversion to Pandas DataFrame successful!")
-
-        # Convert Pandas DataFrame to Spark DataFrame
-        spark = SparkSession.builder.appName("ExtractToSparkDF").getOrCreate()
-        spark_df = spark.createDataFrame(pandas_df)
-
-        print("Conversion to Spark DataFrame successful!")
-        return spark_df
+        print(f"Download successful! File saved to {output_path}")
+        return output_path
 
     except requests.exceptions.RequestException as e:
         print(f"Download failed: {e}")
         return None
 
-def execute_sql_from_file_with_spark(sql_file_path, catalog_name, warehouse_location):
+
+def execute_sql_from_file_with_spark(sql_file_path, catalog_name, region_name):
     """
     Executes a SQL file to create an Iceberg table using Apache Spark.
 
@@ -59,8 +64,9 @@ def execute_sql_from_file_with_spark(sql_file_path, catalog_name, warehouse_loca
     spark = SparkSession.builder \
         .appName("IcebergTableCreation") \
         .config(f"spark.sql.catalog.{catalog_name}", "org.apache.iceberg.spark.SparkCatalog") \
-        .config(f"spark.sql.catalog.{catalog_name}.type", "hive") \
-        .config(f"spark.sql.catalog.{catalog_name}.warehouse", warehouse_location) \
+        .config(f"spark.sql.catalog.{catalog_name}.type", "glue") \
+        .config(f"spark.sql.catalog.{catalog_name}.warehouse", f"s3://{catalog_name}/") \
+        .config(f"spark.sql.catalog.{catalog_name}.region", region_name) \
         .getOrCreate()
 
     # Read SQL from file
@@ -98,6 +104,7 @@ def transform(spark_df, rename_dict):
     # Add 'ip_low' and 'ip_high' columns by applying the UDF
     spark_df = spark_df.withColumn('ip_low', ip_number_to_address(col('ip_num_low')))
     spark_df = spark_df.withColumn('ip_high', ip_number_to_address(col('ip_num_high')))
+    spark_df = spark_df.withColumn('updated_at', current_timestamp())
 
     # Drop the 'proxytype' column
     if 'proxytype' in spark_df.columns:
